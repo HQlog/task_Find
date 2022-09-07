@@ -12,33 +12,27 @@ public class Find {
     static StringBuilder result = new StringBuilder();
 
 
-
     @Option(name = "-r")
     public boolean r;
 
     @Option(name = "-d")
     public String directory;
 
-    @Argument (required = true)
+    @Argument(required = true)
     public static String fileName;
 
-     void workWithArguments(String[] args) throws IOException {
+    void workWithArguments(String[] args) throws IOException {
 
         CmdLineParser parser = new CmdLineParser(this);
 
         try {
             parser.parseArgument(args);
         } catch (CmdLineException e) {
-            throw new IllegalArgumentException("kjhgfxgfj");
+            throw new IllegalArgumentException("");
         }
 
         if (fileName == null) throw new IOException("YourArgumentsIsEmpty");
         if (directory.isEmpty()) throw new IOException("DirectoryIsIncorrect");
-
-
-
-
-
 
 
         if (r) findFiles(directory, fileName);
@@ -67,11 +61,12 @@ public class Find {
                 if (listFiles.length == 0) {
                     result.append(directory).append(" не содержит файлов");
                 } else for (File f : listFiles) {
-                    if (f.getName().equals(name)){
+                    if (f.getName().equals(name)) {
                         result.append("Файл: ").append(directory).append("\\").append(f.getName());
-                    return;}
+                        return;
+                    }
                 }
-                result.append("Файл не найден");
+
             }
         } else result.append(directory).append(" не существует");
 
@@ -85,25 +80,36 @@ public class Find {
 
                 assert listFiles != null;
 
-                if (listFiles.length == 0) result.append(directory).append(" не содержит файлов");
+                if (listFiles.length != 0) {
 
-                else for (File f : listFiles) {
-                    isDir(f, name);
-                    if (f.getName().equals(name))
-                        result.append("Файл: ").append(directory).append("\\").append(f.getName());
+                    for (File f : listFiles) {
+                        isDir(f, name);
+                        if (f.getName().equals(name)) {
+                            result.append("Файл: ").append(directory).append("\\").append(f.getName());
+                            return;
+                        }
+                    }
                 }
+
             }
         } else result.append(directory).append(" не существует");
     }
 
     public static void main(String[] args) throws IOException {
         new Find().workWithArguments(args);
-        for (String s : args) {System.out.print(s);}
+        for (String s : args) {
+            System.out.print(s);
+        }
         System.out.print("\n");
         System.out.print("file = ");
         System.out.println(fileName);
 
-        System.out.println("asdadasd");
+
+
+
+        if (result.toString().equals("")){
+            System.out.println("Файл не найден");
+        }
         System.out.println(result);
     }
 
